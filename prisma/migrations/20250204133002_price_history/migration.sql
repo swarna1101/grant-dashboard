@@ -1,0 +1,6 @@
+-- CreateTable
+CREATE TABLE "PriceHistory" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "price" TEXT NOT NULL
+);
