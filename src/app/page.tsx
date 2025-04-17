@@ -5,15 +5,28 @@ import TaikoPieChart, { PieDataType } from "~/components/taikopiechart";
 import { useData } from "~/hooks/useData";
 import { useProjectStore } from "~/store/projectdata.store";
 import { ProjectType } from "~/types";
+import { ImageGallery } from "~/components/ImageGallery";
 
 function App() {
   const { projects, isLoading } = useProjectStore();
   const { loadData, isLoading: isDataLoading } = useData();
 
-  const [searchTerm,setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Add image paths
+  const images = [
+    "/images/1.jpg",
+    "/images/2.jpg",
+    "/images/3.jpg",
+    "/images/4.jpg",
+    "/images/5.jpg",
+    "/images/6.jpg",
+  ];
+
   useEffect(() => {
     console.log({ projects, isLoading });
   }, [projects, isLoading]);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -72,22 +85,19 @@ function App() {
     );
   }, [projects]);
 
-
-
   const getProjects = useCallback(() => {
     if (projects) {
-        
       if (searchTerm) {
-        return  projects.filter(item => {
-          return  item.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+        return projects.filter(item => {
+          return item.projectName.toLowerCase().includes(searchTerm.toLowerCase())
         });
-      
       } else {
         return projects
       }
     }
     return []
-  }, [projects,searchTerm])
+  }, [projects, searchTerm]);
+
   return (
     <main>
       {isLoading ? (
@@ -95,10 +105,13 @@ function App() {
           <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-white"></div>
         </div>
       ) : (
-        <div className="min-w-screen flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-          <div className="flex w-full flex-wrap gap-2 md:ml-10 md:flex-nowrap">
-            {taikoPieChart()}
-            <DataTable data={getProjects()} onSearch={setSearchTerm} />
+        <div className="min-w-screen flex min-h-screen flex-col items-center justify-center gap-4 p-4 dark:bg-gray-800">
+          <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
+            <div className="flex flex-col gap-4 w-full md:w-1/2">
+              {taikoPieChart()}
+              <ImageGallery images={images} />
+            </div>
+            <DataTable data={getProjects()} onSearch={setSearchTerm} className="w-full" />
           </div>
         </div>
       )}
