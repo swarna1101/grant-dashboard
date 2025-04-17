@@ -111,7 +111,9 @@ function App() {
               {taikoPieChart()}
               <ImageGallery images={images} />
             </div>
-            <DataTable data={getProjects()} onSearch={setSearchTerm} className="w-full" />
+            <div className="w-full">
+              <DataTable data={getProjects()} onSearch={setSearchTerm} />
+            </div>
           </div>
         </div>
       )}
