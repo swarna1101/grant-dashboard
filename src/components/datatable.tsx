@@ -14,14 +14,23 @@ export function DataTable({ data,onSearch }: DataTableProps) {
   const ITEMS_PER_PAGE = 10;
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedVertical, setSelectedVertical] = useState<string>('');
+
+  // Get unique verticals from data
+  const verticals = Array.from(new Set(data.map(project => project.vertial)));
+
+  // Filter data based on selected vertical
+  const filteredData = selectedVertical 
+    ? data.filter(project => project.vertial === selectedVertical)
+    : data;
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 
   // Get the data for the current page
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentPageData = data.slice(startIndex, endIndex);
+  const currentPageData = filteredData.slice(startIndex, endIndex);
 
   const [isOpen, setModelOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<
@@ -51,11 +60,32 @@ export function DataTable({ data,onSearch }: DataTableProps) {
       <span className="w-full text-center text-2xl font-bold">
         Grant Details
       </span>
-      <div  className="mt-5">
-   
-        <TextInput placeholder="search project" onChange={(t) => {
-          onSearch(t.target.value)
-        }}/>
+      <div className="mt-5 flex gap-4">
+        <div className="w-1/2">
+          <TextInput 
+            placeholder="search project" 
+            onChange={(t) => {
+              onSearch(t.target.value)
+            }}
+          />
+        </div>
+        <div className="w-1/2">
+          <select
+            className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            value={selectedVertical}
+            onChange={(e) => {
+              setSelectedVertical(e.target.value);
+              setCurrentPage(1); // Reset to first page when filter changes
+            }}
+          >
+            <option value="">All Verticals</option>
+            {verticals.map((vertical) => (
+              <option key={vertical} value={vertical}>
+                {vertical}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <Table className="mt-5">
