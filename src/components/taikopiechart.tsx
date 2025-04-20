@@ -32,7 +32,6 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const { name, value, color } = payload[0]!.payload as PieDataType;
 
-    // Format the value as USD
     const formatter = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
@@ -44,12 +43,13 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     return (
       <div
         style={{
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          backgroundColor: "var(--tooltip-bg)",
           padding: "10px",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
+          border: "1px solid var(--tooltip-border)",
           borderRadius: "5px",
-          color: "white",
+          color: "var(--tooltip-text)",
         }}
+        className="dark:[--tooltip-bg:rgba(0,0,0,0.8)] dark:[--tooltip-border:rgba(255,255,255,0.2)] dark:[--tooltip-text:white] [--tooltip-bg:rgba(255,255,255,0.95)] [--tooltip-border:rgba(0,0,0,0.1)] [--tooltip-text:rgba(0,0,0,0.9)]"
       >
         <p style={{ margin: 0, fontWeight: "bold" }}>
           <span style={{ color }}>{name}</span>
@@ -59,7 +59,6 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
       </div>
     );
   }
-
   return null;
 };
 
@@ -86,11 +85,10 @@ const renderCustomizedLabel = ({
   name,
   value,
 }: CustomizedLabelProps) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 1.1; // Increased radius for better spacing
+  const radius = innerRadius + (outerRadius - innerRadius) * 1.1;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   
-  // Format value as currency
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -98,17 +96,17 @@ const renderCustomizedLabel = ({
     maximumFractionDigits: 0,
   });
   
-  // Only show label if percent is greater than 1%
   if (percent < 0.01) return null;
 
   return (
     <text
       x={x}
       y={y}
-      fill="white"
+      fill="currentColor"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="middle"
       fontSize="12"
+      className="text-gray-900 dark:text-white"
     >
       <tspan x={x} dy="-1.2em" fontWeight="bold">
         {name}
@@ -129,10 +127,10 @@ const TaikoPieChart = ({ subtitle, data, title }: PieChartProps) => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-4 break-words text-center text-xl font-bold md:text-2xl">
+      <h2 className="mb-4 break-words text-center text-xl font-bold text-gray-900 dark:text-white md:text-2xl">
         {title}
       </h2>
-      <div className="relative h-[400px] w-full md:h-[500px] lg:h-[600px]">
+      <div className="relative h-[400px] w-full text-gray-900 dark:text-white md:h-[500px] lg:h-[600px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -150,7 +148,7 @@ const TaikoPieChart = ({ subtitle, data, title }: PieChartProps) => {
                 <Cell 
                   key={`cell-${index}`} 
                   fill={entry.color}
-                  stroke="rgba(0, 0, 0, 0.2)"
+                  stroke={entry.color}
                   strokeWidth={1}
                 />
               ))}
@@ -163,13 +161,14 @@ const TaikoPieChart = ({ subtitle, data, title }: PieChartProps) => {
               wrapperStyle={{
                 paddingTop: "20px",
                 fontSize: "14px",
-                color: "white",
+                color: "var(--legend-text)",
               }}
+              className="dark:[--legend-text:white] [--legend-text:rgba(0,0,0,0.9)]"
             />
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-4 break-words text-center text-sm font-bold md:text-xl">
+      <p className="mt-4 break-words text-center text-sm font-bold text-gray-700 dark:text-gray-300 md:text-xl">
         {subtitle}
       </p>
     </div>

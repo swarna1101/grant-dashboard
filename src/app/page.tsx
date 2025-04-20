@@ -6,6 +6,7 @@ import { useData } from "~/hooks/useData";
 import { useProjectStore } from "~/store/projectdata.store";
 import { ProjectType } from "~/types";
 import { ImageGallery } from "~/components/ImageGallery";
+import { LoadingState } from "~/components/LoadingState";
 
 function App() {
   const { projects, isLoading } = useProjectStore();
@@ -100,10 +101,8 @@ function App() {
 
   return (
     <main>
-      {isLoading ? (
-        <div className="flex h-screen items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-white"></div>
-        </div>
+      {isLoading || isDataLoading ? (
+        <LoadingState />
       ) : (
         <div className="min-w-screen flex min-h-screen flex-col items-center justify-center gap-4 p-4 dark:bg-gray-800">
           <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
