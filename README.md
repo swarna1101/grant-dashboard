@@ -2,7 +2,7 @@
 
 A modern, interactive dashboard for tracking and visualizing Taiko grant distributions. This application provides a comprehensive view of grant allocations across different verticals, with detailed transaction information and visual analytics.
 
-![Taiko Grant Dashboard](/images/overview_readme.png)
+![Taiko Grant Dashboard](public/images/overview_readme.png)
 
 ## Features
 
