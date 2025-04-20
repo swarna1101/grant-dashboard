@@ -43,7 +43,6 @@ export const pricesRouter = createTRPCRouter({
       const options = {
         method: "GET",
         url: "https://67a21a53409de5ed52544d7a.mockapi.io/priceHistory",
-        // params: { x_cg_pro_api_key: "CG-FV9CGjnrvRASdLnW1AEPSsgT" },
         headers: { accept: "application/json" },
       };
 
