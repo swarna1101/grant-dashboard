@@ -7,6 +7,7 @@ import { useProjectStore } from "~/store/projectdata.store";
 import { ProjectType } from "~/types";
 import { ImageGallery } from "~/components/ImageGallery";
 import { LoadingState } from "~/components/LoadingState";
+import BudgetStats from "~/components/BudgetStats";
 
 function App() {
   const { projects, isLoading } = useProjectStore();
@@ -74,13 +75,24 @@ function App() {
       style: "currency",
       currency: "USD",
     });
-    const formattedAmount = formatter.format(
-      filteredPieData.reduce((acc, i) => {
-        return acc + i.value;
-      }, 0),
-    );
 
-    const subtitle = `Total Distribution ${formattedAmount}`;
+    // Calculate total USD
+    const totalUSD = filteredPieData.reduce((acc, i) => {
+      return acc + i.value;
+    }, 0);
+    const formattedUSD = formatter.format(totalUSD);
+
+    // Calculate total TAIKO
+    const totalTAIKO = projects.reduce((acc, project) => {
+      return acc + project.txns.reduce((acc, txn) => {
+        return acc + (txn.amountInTaiko || 0);
+      }, 0);
+    }, 0);
+    const formattedTAIKO = new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 2,
+    }).format(totalTAIKO);
+
+    const subtitle = `Total Distribution: ${formattedUSD} / ${formattedTAIKO} TAIKO`;
     return (
       <TaikoPieChart data={filteredPieData} title={title} subtitle={subtitle} />
     );
@@ -105,6 +117,7 @@ function App() {
         <LoadingState />
       ) : (
         <div className="min-w-screen flex min-h-screen flex-col items-center justify-center gap-4 p-4 dark:bg-gray-800">
+          <BudgetStats />
           <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
             <div className="flex flex-col gap-4 w-full md:w-1/2">
               {taikoPieChart()}

@@ -26,7 +26,6 @@ export const useData = () => {
     for (const item of data) {
       try {
         if (
-          item.Vertical &&
           item.Receiver &&
           (item["Amount Out (TAIKO)"] || item["Amount Out (USDT/USDC)"])
         ) {
@@ -73,20 +72,23 @@ export const useData = () => {
             continue;
           }
 
+          // Use "Infra" as default vertical if not specified
+          const vertical = item.Vertical || "Infra";
+
           const projectIndex = projects.findIndex(
             (project) => project.projectName === item.Receiver
           );
 
           if (projectIndex === -1) {
             const existingVerticalProject = projects.find((i) => {
-              return i.vertial === item.Vertical;
+              return i.vertial === vertical;
             });
             const verticalColor = existingVerticalProject
               ? existingVerticalProject.verticalColor
               : getRandomHexColor();
             const newProject: ProjectType = {
               projectName: item.Receiver,
-              vertial: item.Vertical,
+              vertial: vertical,
               verticalColor,
               txns: [txn],
             };
