@@ -9,6 +9,7 @@ import { Transaction } from "./project-dashboards/BaseProjectDashboard";
 import NetworkAnalytics from "./NetworkAnalytics";
 import BlockMediaAnalytics from "./BlockMediaAnalytics";
 import IntraverseAnalytics from "./IntraverseAnalytics";
+import FourPillarsAnalytics from "./FourPillarsAnalytics";
 
 // Dynamic imports for project dashboards
 const loadProjectDashboard = (projectName: string) => {
@@ -83,10 +84,14 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
                             <Tabs.Item active title="Game Analytics">
                                 <IntraverseAnalytics />
                             </Tabs.Item>
+                        ) : project.projectName === "Four Pillars" ? (
+                            <Tabs.Item active title="Content Analytics">
+                                <FourPillarsAnalytics />
+                            </Tabs.Item>
                         ) : null}
                         
                         {/* Project Analytics tab is available for all projects */}
-                        <Tabs.Item active={!["Block Media", "Nethermind", "Intraverse"].includes(project.projectName)} title="Project Analytics">
+                        <Tabs.Item active={!["Block Media", "Nethermind", "Intraverse", "Four Pillars"].includes(project.projectName)} title="Project Analytics">
                             <Table>
                                 <Table.Head>
                                     <Table.HeadCell className="bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
