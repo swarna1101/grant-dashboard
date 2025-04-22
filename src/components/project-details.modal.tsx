@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { Transaction } from "./project-dashboards/BaseProjectDashboard";
 import NetworkAnalytics from "./NetworkAnalytics";
 import BlockMediaAnalytics from "./BlockMediaAnalytics";
+import IntraverseAnalytics from "./IntraverseAnalytics";
 
 // Dynamic imports for project dashboards
 const loadProjectDashboard = (projectName: string) => {
@@ -35,6 +36,8 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
 
     const ProjectDashboard = loadProjectDashboard(project.projectName);
     const isBlockMedia = project.projectName === "Block Media";
+    const isIntraverse = project.projectName === "Intraverse";
+    const isNethermind = project.projectName === "Nethermind";
 
     const transactions: Transaction[] = project.txns.map(txn => {
         // Handle different possible formats of transaction hash
@@ -67,16 +70,23 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
                 </Modal.Header>
                 <Modal.Body className="bg-white dark:bg-gray-800">
                     <Tabs>
-                        {isBlockMedia ? (
+                        {/* Only show Network Analytics or Block Media Analytics for specific projects */}
+                        {project.projectName === "Block Media" ? (
                             <Tabs.Item active title="Content Analytics">
                                 <BlockMediaAnalytics />
                             </Tabs.Item>
-                        ) : (
+                        ) : project.projectName === "Nethermind" ? (
                             <Tabs.Item active title="Network Analytics">
                                 <NetworkAnalytics />
                             </Tabs.Item>
-                        )}
-                        <Tabs.Item title="Transactions">
+                        ) : project.projectName === "Intraverse" ? (
+                            <Tabs.Item active title="Game Analytics">
+                                <IntraverseAnalytics />
+                            </Tabs.Item>
+                        ) : null}
+                        
+                        {/* Project Analytics tab is available for all projects */}
+                        <Tabs.Item active={!["Block Media", "Nethermind", "Intraverse"].includes(project.projectName)} title="Project Analytics">
                             <Table>
                                 <Table.Head>
                                     <Table.HeadCell className="bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
