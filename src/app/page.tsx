@@ -5,25 +5,15 @@ import TaikoPieChart, { PieDataType } from "~/components/taikopiechart";
 import { useData } from "~/hooks/useData";
 import { useProjectStore } from "~/store/projectdata.store";
 import { ProjectType } from "~/types";
-import { ImageGallery } from "~/components/ImageGallery";
 import { LoadingState } from "~/components/LoadingState";
 import BudgetStats from "~/components/BudgetStats";
+import TaikoGrantDashboard from "~/components/TaikoGrantDashboard";
 
 function App() {
   const { projects, isLoading } = useProjectStore();
   const { loadData, isLoading: isDataLoading } = useData();
 
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Add image paths
-  const images = [
-    "/images/1.jpg",
-    "/images/2.jpg",
-    "/images/3.jpg",
-    "/images/4.jpg",
-    "/images/5.jpg",
-    "/images/6.jpg",
-  ];
 
   useEffect(() => {
     console.log({ projects, isLoading });
@@ -121,7 +111,7 @@ function App() {
           <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
             <div className="flex flex-col gap-4 w-full md:w-1/2">
               {taikoPieChart()}
-              <ImageGallery images={images} />
+              <TaikoGrantDashboard />
             </div>
             <div className="w-full">
               <DataTable data={getProjects()} onSearch={setSearchTerm} />
