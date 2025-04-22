@@ -76,7 +76,7 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
                             <Tabs.Item active title="Content Analytics">
                                 <BlockMediaAnalytics />
                             </Tabs.Item>
-                        ) : project.projectName === "Nethermind" ? (
+                        ) : project.projectName === "Taco Studios" ? (
                             <Tabs.Item active title="Network Analytics">
                                 <NetworkAnalytics />
                             </Tabs.Item>
@@ -91,7 +91,7 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
                         ) : null}
                         
                         {/* Project Analytics tab is available for all projects */}
-                        <Tabs.Item active={!["Block Media", "Nethermind", "Intraverse", "Four Pillars"].includes(project.projectName)} title="Project Analytics">
+                        <Tabs.Item active={!["Block Media", "Taco Studios", "Intraverse", "Four Pillars"].includes(project.projectName)} title="Project Analytics">
                             <Table>
                                 <Table.Head>
                                     <Table.HeadCell className="bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
