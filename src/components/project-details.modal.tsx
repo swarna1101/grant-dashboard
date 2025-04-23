@@ -10,6 +10,7 @@ import NetworkAnalytics from "./project-dashboards/NetworkAnalytics";
 import BlockMediaAnalytics from "./project-dashboards/BlockMediaAnalytics";
 import IntraverseAnalytics from "./project-dashboards/IntraverseAnalytics";
 import FourPillarsAnalytics from "./project-dashboards/FourPillarsAnalytics";
+import DefiAnalytics from "./project-dashboards/DefiAnalytics";
 
 // Dynamic imports for project dashboards
 const loadProjectDashboard = (projectName: string) => {
@@ -30,6 +31,13 @@ const loadProjectDashboard = (projectName: string) => {
   );
 };
 
+// List of DeFi projects
+const DEFI_PROJECTS = [
+    "Curve", "Solv", "Panko", "Tako Tako", "Avalon", 
+    "Dodo", "KiloEx", "Henjin DEX", "iZUMi", "Magpie", "Sushi",
+    "Symbiosis", "Swapsicle | Robinos"
+];
+
 export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project?: ProjectType, isOpen: boolean, setOpenModal: (isOpen: boolean) => void }) {
     if (!project) {
         return <div></div>
@@ -39,6 +47,7 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
     const isBlockMedia = project.projectName === "Block Media";
     const isIntraverse = project.projectName === "Intraverse";
     const isNethermind = project.projectName === "Nethermind";
+    const isDefi = DEFI_PROJECTS.includes(project.projectName);
 
     const transactions: Transaction[] = project.txns.map(txn => {
         // Handle different possible formats of transaction hash
@@ -71,21 +80,28 @@ export function ProjectDetailsModel({ project, isOpen, setOpenModal }: { project
                 </Modal.Header>
                 <Modal.Body className="bg-white dark:bg-gray-800">
                     <Tabs>
+                        {/* Show DeFi Analytics tab for DeFi projects */}
+                        {isDefi && (
+                            <Tabs.Item active title="DeFi Analytics">
+                                <DefiAnalytics projectName={project.projectName} />
+                            </Tabs.Item>
+                        )}
+                        
                         {/* Only show Network Analytics or Block Media Analytics for specific projects */}
                         {project.projectName === "Block Media" ? (
-                            <Tabs.Item active title="Content Analytics">
+                            <Tabs.Item active={!isDefi} title="Content Analytics">
                                 <BlockMediaAnalytics />
                             </Tabs.Item>
                         ) : project.projectName === "Taco Studios" ? (
-                            <Tabs.Item active title="Network Analytics">
+                            <Tabs.Item active={!isDefi} title="Network Analytics">
                                 <NetworkAnalytics />
                             </Tabs.Item>
                         ) : project.projectName === "Intraverse" ? (
-                            <Tabs.Item active title="Game Analytics">
+                            <Tabs.Item active={!isDefi} title="Game Analytics">
                                 <IntraverseAnalytics />
                             </Tabs.Item>
                         ) : project.projectName === "Four Pillars" ? (
-                            <Tabs.Item active title="Content Analytics">
+                            <Tabs.Item active={!isDefi} title="Content Analytics">
                                 <FourPillarsAnalytics />
                             </Tabs.Item>
                         ) : null}
