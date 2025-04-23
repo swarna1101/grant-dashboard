@@ -6,10 +6,10 @@ import moment from "moment";
 import dynamic from 'next/dynamic';
 import { Suspense } from "react";
 import { Transaction } from "./project-dashboards/BaseProjectDashboard";
-import NetworkAnalytics from "./NetworkAnalytics";
-import BlockMediaAnalytics from "./BlockMediaAnalytics";
-import IntraverseAnalytics from "./IntraverseAnalytics";
-import FourPillarsAnalytics from "./FourPillarsAnalytics";
+import NetworkAnalytics from "./project-dashboards/NetworkAnalytics";
+import BlockMediaAnalytics from "./project-dashboards/BlockMediaAnalytics";
+import IntraverseAnalytics from "./project-dashboards/IntraverseAnalytics";
+import FourPillarsAnalytics from "./project-dashboards/FourPillarsAnalytics";
 
 // Dynamic imports for project dashboards
 const loadProjectDashboard = (projectName: string) => {
